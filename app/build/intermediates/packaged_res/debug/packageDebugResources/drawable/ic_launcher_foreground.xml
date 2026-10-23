@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Soft cyan/magenta cyber music note -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M54,20c-2,0 -4,1.5 -4,4v40c-4,-2 -9,-3 -14,-3c-12,0 -22,6 -22,14s10,14 22,14s22,-6 22,-14V36l20,-6V48c-4,-2 -9,-3 -14,-3c-12,0 -22,6 -22,14s10,14 22,14s22,-6 22,-14V24c0,-2.5 -2,-4 -4,-4H54z"/>
+    <path
+        android:fillColor="#FF00AA"
+        android:pathData="M40,72c-6,0 -10,-3 -10,-7s4,-7 10,-7s10,3 10,7s-4,7 -10,7z"/>
+</vector>

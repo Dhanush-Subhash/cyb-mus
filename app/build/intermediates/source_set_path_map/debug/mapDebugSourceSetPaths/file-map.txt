@@ -1,0 +1,65 @@
+com.cybmus.music.app-ui-text-release-0 /home/arch/.gradle/caches/8.9/transforms/08b2984ad7d3d82b17996db9c4931c68/transformed/ui-text-release/res
+com.cybmus.music.app-annotation-experimental-1.4.1-1 /home/arch/.gradle/caches/8.9/transforms/096a80e1f950e36c8f3eaa920f05f25e/transformed/annotation-experimental-1.4.1/res
+com.cybmus.music.app-startup-runtime-1.1.1-2 /home/arch/.gradle/caches/8.9/transforms/099a3c68de60d0a5289d1a1f1c48b873/transformed/startup-runtime-1.1.1/res
+com.cybmus.music.app-emoji2-1.3.0-3 /home/arch/.gradle/caches/8.9/transforms/0bf9683449d25625e5bbe147e089bcb0/transformed/emoji2-1.3.0/res
+com.cybmus.music.app-profileinstaller-1.3.1-4 /home/arch/.gradle/caches/8.9/transforms/15dd328c82bad213991a96a5928ca9ca/transformed/profileinstaller-1.3.1/res
+com.cybmus.music.app-material3-release-5 /home/arch/.gradle/caches/8.9/transforms/263c35bb4f4d0da69e7a934841b86bc2/transformed/material3-release/res
+com.cybmus.music.app-core-ktx-1.15.0-6 /home/arch/.gradle/caches/8.9/transforms/2d87094b697f738c28f87d0d9343c9d6/transformed/core-ktx-1.15.0/res
+com.cybmus.music.app-lifecycle-viewmodel-savedstate-2.8.7-7 /home/arch/.gradle/caches/8.9/transforms/2f6aa5c15fc6969b74bd1769be0882b7/transformed/lifecycle-viewmodel-savedstate-2.8.7/res
+com.cybmus.music.app-ui-test-manifest-1.7.5-8 /home/arch/.gradle/caches/8.9/transforms/3275636acd05354bcc48d85f75012ad7/transformed/ui-test-manifest-1.7.5/res
+com.cybmus.music.app-material-icons-core-release-9 /home/arch/.gradle/caches/8.9/transforms/372ec94ebfd6c8004694274765fb8586/transformed/material-icons-core-release/res
+com.cybmus.music.app-customview-poolingcontainer-1.0.0-10 /home/arch/.gradle/caches/8.9/transforms/38e83b78a9980d2ac253eef9282eb37e/transformed/customview-poolingcontainer-1.0.0/res
+com.cybmus.music.app-ui-tooling-data-release-11 /home/arch/.gradle/caches/8.9/transforms/3959d0a6f924fc09064a7150a7c1981d/transformed/ui-tooling-data-release/res
+com.cybmus.music.app-ui-tooling-preview-release-12 /home/arch/.gradle/caches/8.9/transforms/3ce2fdb23ea756c0914bda3479d2d92a/transformed/ui-tooling-preview-release/res
+com.cybmus.music.app-appcompat-resources-1.6.1-13 /home/arch/.gradle/caches/8.9/transforms/3e08fba37e3cc320628965ff660334b0/transformed/appcompat-resources-1.6.1/res
+com.cybmus.music.app-coil-base-2.7.0-14 /home/arch/.gradle/caches/8.9/transforms/3e49074d567ea4cce0fab0b707b9f972/transformed/coil-base-2.7.0/res
+com.cybmus.music.app-animation-release-15 /home/arch/.gradle/caches/8.9/transforms/42fc845568c0da1ba0fb7f1141736b3f/transformed/animation-release/res
+com.cybmus.music.app-material-ripple-release-16 /home/arch/.gradle/caches/8.9/transforms/4f1cb022dae936db5ddf67819034b6ad/transformed/material-ripple-release/res
+com.cybmus.music.app-runtime-saveable-release-17 /home/arch/.gradle/caches/8.9/transforms/51cc46e7f95c5708aea6fc26d9849b1c/transformed/runtime-saveable-release/res
+com.cybmus.music.app-lifecycle-runtime-compose-release-18 /home/arch/.gradle/caches/8.9/transforms/57a57899ca1f46020af53516e4a7cfa2/transformed/lifecycle-runtime-compose-release/res
+com.cybmus.music.app-core-1.15.0-19 /home/arch/.gradle/caches/8.9/transforms/5b266e964a5ecceaeb29d258206a0758/transformed/core-1.15.0/res
+com.cybmus.music.app-navigation-common-2.8.3-20 /home/arch/.gradle/caches/8.9/transforms/5c6d6073c919324c22c9202e25c54f6f/transformed/navigation-common-2.8.3/res
+com.cybmus.music.app-media3-ui-1.4.1-21 /home/arch/.gradle/caches/8.9/transforms/60699695b32ce9597d562eee423fc843/transformed/media3-ui-1.4.1/res
+com.cybmus.music.app-media-1.7.0-22 /home/arch/.gradle/caches/8.9/transforms/647e25d2f65bc963640443a34806a988/transformed/media-1.7.0/res
+com.cybmus.music.app-graphics-path-1.0.1-23 /home/arch/.gradle/caches/8.9/transforms/6a316f2021b44593c5a6717ab2f0f12e/transformed/graphics-path-1.0.1/res
+com.cybmus.music.app-lifecycle-viewmodel-compose-release-24 /home/arch/.gradle/caches/8.9/transforms/6c0369b188fde46a685530d1e2ee0314/transformed/lifecycle-viewmodel-compose-release/res
+com.cybmus.music.app-savedstate-ktx-1.2.1-25 /home/arch/.gradle/caches/8.9/transforms/6e9be89b67822459b7dc86c30f3b146f/transformed/savedstate-ktx-1.2.1/res
+com.cybmus.music.app-navigation-compose-2.8.3-26 /home/arch/.gradle/caches/8.9/transforms/713127f86d4ec0f0559a6f80ed3e0f63/transformed/navigation-compose-2.8.3/res
+com.cybmus.music.app-lifecycle-viewmodel-ktx-2.8.7-27 /home/arch/.gradle/caches/8.9/transforms/72f3f9912690ca31b911b62feae36d98/transformed/lifecycle-viewmodel-ktx-2.8.7/res
+com.cybmus.music.app-ui-geometry-release-28 /home/arch/.gradle/caches/8.9/transforms/7798c03ed55d570bb7ae51104500f499/transformed/ui-geometry-release/res
+com.cybmus.music.app-lifecycle-runtime-release-29 /home/arch/.gradle/caches/8.9/transforms/79a67ce52e3dd31b3e52cca7242f03ae/transformed/lifecycle-runtime-release/res
+com.cybmus.music.app-activity-1.9.3-30 /home/arch/.gradle/caches/8.9/transforms/8086eea03d0bcac36473d9e8721d53e6/transformed/activity-1.9.3/res
+com.cybmus.music.app-ui-unit-release-31 /home/arch/.gradle/caches/8.9/transforms/814140ecec9858bb8f048912a1dfbe91/transformed/ui-unit-release/res
+com.cybmus.music.app-material-release-32 /home/arch/.gradle/caches/8.9/transforms/8e10a2c3eb8f7e4581730947d9517693/transformed/material-release/res
+com.cybmus.music.app-lifecycle-livedata-2.8.7-33 /home/arch/.gradle/caches/8.9/transforms/989c4910b584e69f8b8f672da9d0a5dd/transformed/lifecycle-livedata-2.8.7/res
+com.cybmus.music.app-lifecycle-livedata-core-ktx-2.8.7-34 /home/arch/.gradle/caches/8.9/transforms/99a204a36871c9514b62b1aa3df61dd0/transformed/lifecycle-livedata-core-ktx-2.8.7/res
+com.cybmus.music.app-recyclerview-1.3.0-35 /home/arch/.gradle/caches/8.9/transforms/9ce46810ca5ebfec5cbc9080c8cbec5d/transformed/recyclerview-1.3.0/res
+com.cybmus.music.app-animation-core-release-36 /home/arch/.gradle/caches/8.9/transforms/9df7bf57bcc698eac94f8fe529dafeb3/transformed/animation-core-release/res
+com.cybmus.music.app-ui-tooling-release-37 /home/arch/.gradle/caches/8.9/transforms/a068e0390c7d4e8c9d8e3a294c3b8bdd/transformed/ui-tooling-release/res
+com.cybmus.music.app-foundation-release-38 /home/arch/.gradle/caches/8.9/transforms/a449716bb4c8a6bf21f550a868399695/transformed/foundation-release/res
+com.cybmus.music.app-navigation-runtime-ktx-2.8.3-39 /home/arch/.gradle/caches/8.9/transforms/a6f664054a61d4e31b74c0765b41702f/transformed/navigation-runtime-ktx-2.8.3/res
+com.cybmus.music.app-material-icons-extended-release-40 /home/arch/.gradle/caches/8.9/transforms/ac37dcd0ddedd871ec3592eb08ee9f76/transformed/material-icons-extended-release/res
+com.cybmus.music.app-runtime-release-41 /home/arch/.gradle/caches/8.9/transforms/ae31357e7d88c596d4602dd46076bfa0/transformed/runtime-release/res
+com.cybmus.music.app-savedstate-1.2.1-42 /home/arch/.gradle/caches/8.9/transforms/b544fab7c4d2b2df03c3dcb4355edd90/transformed/savedstate-1.2.1/res
+com.cybmus.music.app-ui-graphics-release-43 /home/arch/.gradle/caches/8.9/transforms/b89bf601cb827cadd50b43e5fc530504/transformed/ui-graphics-release/res
+com.cybmus.music.app-ui-util-release-44 /home/arch/.gradle/caches/8.9/transforms/b9b9564b759d44b337289676f9f83a1e/transformed/ui-util-release/res
+com.cybmus.music.app-lifecycle-process-2.8.7-45 /home/arch/.gradle/caches/8.9/transforms/be6d9c90a625e285a04cfa9b7746043b/transformed/lifecycle-process-2.8.7/res
+com.cybmus.music.app-media3-exoplayer-1.4.1-46 /home/arch/.gradle/caches/8.9/transforms/c184c00e6b349039bf57be24b594633d/transformed/media3-exoplayer-1.4.1/res
+com.cybmus.music.app-activity-compose-1.9.3-47 /home/arch/.gradle/caches/8.9/transforms/cbe31cd0befdfc4e0d7b3f6a652c55b2/transformed/activity-compose-1.9.3/res
+com.cybmus.music.app-lifecycle-runtime-ktx-release-48 /home/arch/.gradle/caches/8.9/transforms/cc35a74a1b5aa52ea32f810d0249c795/transformed/lifecycle-runtime-ktx-release/res
+com.cybmus.music.app-lifecycle-livedata-core-2.8.7-49 /home/arch/.gradle/caches/8.9/transforms/cc4a13714ae281913cab09871d89f8fb/transformed/lifecycle-livedata-core-2.8.7/res
+com.cybmus.music.app-media3-session-1.4.1-50 /home/arch/.gradle/caches/8.9/transforms/cc5cb7d48adf84ecfca850b8bc36314b/transformed/media3-session-1.4.1/res
+com.cybmus.music.app-foundation-layout-release-51 /home/arch/.gradle/caches/8.9/transforms/d41fae3b969d50ab82b27e704efb7f9e/transformed/foundation-layout-release/res
+com.cybmus.music.app-lifecycle-viewmodel-release-52 /home/arch/.gradle/caches/8.9/transforms/d7b05d4e250a37acd669d11dfcbe1c25/transformed/lifecycle-viewmodel-release/res
+com.cybmus.music.app-navigation-runtime-2.8.3-53 /home/arch/.gradle/caches/8.9/transforms/e1e705105429f034187db50fbdb7ac8c/transformed/navigation-runtime-2.8.3/res
+com.cybmus.music.app-tracing-1.2.0-54 /home/arch/.gradle/caches/8.9/transforms/ef207aefd9d8f1b27fdb9491c1183e28/transformed/tracing-1.2.0/res
+com.cybmus.music.app-navigation-common-ktx-2.8.3-55 /home/arch/.gradle/caches/8.9/transforms/f8ca0a2a884ebb7498d54d53afb77c66/transformed/navigation-common-ktx-2.8.3/res
+com.cybmus.music.app-core-runtime-2.2.0-56 /home/arch/.gradle/caches/8.9/transforms/fdba6b52352237eccbcca2adb38fbb51/transformed/core-runtime-2.2.0/res
+com.cybmus.music.app-activity-ktx-1.9.3-57 /home/arch/.gradle/caches/8.9/transforms/fe28479dfecb8dd7bf01810fb01002cc/transformed/activity-ktx-1.9.3/res
+com.cybmus.music.app-ui-release-58 /home/arch/.gradle/caches/8.9/transforms/fe8f70152c647cf36c492fb968a0f9a2/transformed/ui-release/res
+com.cybmus.music.app-resValues-59 /home/arch/Downloads/cyb-mus (2)/app/build/generated/res/resValues/debug
+com.cybmus.music.app-packageDebugResources-60 /home/arch/Downloads/cyb-mus (2)/app/build/intermediates/incremental/debug/packageDebugResources/merged.dir
+com.cybmus.music.app-packageDebugResources-61 /home/arch/Downloads/cyb-mus (2)/app/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
+com.cybmus.music.app-debug-62 /home/arch/Downloads/cyb-mus (2)/app/build/intermediates/merged_res/debug/mergeDebugResources
+com.cybmus.music.app-debug-63 /home/arch/Downloads/cyb-mus (2)/app/src/debug/res
+com.cybmus.music.app-main-64 /home/arch/Downloads/cyb-mus (2)/app/src/main/res
