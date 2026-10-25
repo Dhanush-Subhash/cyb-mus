@@ -1,5 +1,6 @@
 package com.cybmus.music.ui.screens
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
@@ -8,6 +9,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Refresh
@@ -20,6 +22,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,6 +30,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cybmus.music.data.Song
 import com.cybmus.music.ui.theme.LocalCybColors
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import androidx.compose.ui.platform.LocalContext
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -37,12 +45,18 @@ fun LibraryScreen(
     isPlaying: Boolean,
     onSongClick: (Song, Int) -> Unit,
     onSongLongPress: (Song) -> Unit,
+    customCoverUris: Map<Long, Uri>,
+    onCustomCover: (Long, Uri) -> Unit,
     onPlayPause: () -> Unit,
     onOpenPlayer: () -> Unit,
     onScan: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val colors = LocalCybColors.current
+    var coverTarget by remember { mutableStateOf<Song?>(null) }
+    val coverPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        uri?.let { coverTarget?.let { song -> onCustomCover(song.id, it) } }
+    }
     var searchQuery by remember { mutableStateOf("") }
     val visibleSongs = remember(songs, searchQuery) {
         val query = searchQuery.trim()
@@ -51,7 +65,7 @@ fun LibraryScreen(
         }
     }
     Column(
-        modifier = modifier.fillMaxSize().background(colors.background).padding(horizontal = 16.dp)
+        modifier = modifier.fillMaxSize().background(colors.background.copy(alpha = .84f)).padding(horizontal = 16.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
@@ -68,41 +82,50 @@ fun LibraryScreen(
         }
 
         OutlinedTextField(
-            value = searchQuery,
-            onValueChange = { searchQuery = it },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            placeholder = { Text("Search songs, artists, or file types") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
-            shape = RoundedCornerShape(12.dp)
-        )
-        Spacer(Modifier.height(10.dp))
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                placeholder = { Text("Search songs, artists, or file types") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
+                shape = RoundedCornerShape(12.dp)
+            )
+            Spacer(Modifier.height(10.dp))
 
-        if (isLoading) {
-            Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = colors.primary)
-            }
-        } else if (songs.isEmpty()) {
-            EmptyLibrary(onScan, Modifier.weight(1f))
-        } else {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 165.dp),
-                modifier = Modifier.weight(1f).fillMaxWidth(),
-                contentPadding = PaddingValues(top = 4.dp, bottom = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                itemsIndexed(visibleSongs, key = { _, song -> song.id }) { index, song ->
-                    SongCard(song, song.id == currentSong?.id, onSongLongPress) { onSongClick(song, songs.indexOfFirst { it.id == song.id }) }
+            if (isLoading) {
+                Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(color = colors.primary)
+                }
+            } else if (songs.isEmpty()) {
+                EmptyLibrary(onScan, Modifier.weight(1f))
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 165.dp),
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
+                    contentPadding = PaddingValues(top = 4.dp, bottom = 12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    itemsIndexed(visibleSongs, key = { _, song -> song.id }) { _, song ->
+                        SongCard(
+                            song = song,
+                            isCurrent = song.id == currentSong?.id,
+                            customCoverUri = customCoverUris[song.id],
+                            onLongPress = onSongLongPress,
+                            onCoverLongPress = {
+                                coverTarget = song
+                                coverPicker.launch(arrayOf("image/*"))
+                            }
+                        ) { onSongClick(song, songs.indexOfFirst { it.id == song.id }) }
+                    }
                 }
             }
-        }
 
-        if (currentSong != null) {
-            MiniPlayer(currentSong, isPlaying, onPlayPause, onOpenPlayer)
-            Spacer(Modifier.height(8.dp))
+            if (currentSong != null) {
+                MiniPlayer(currentSong, isPlaying, onPlayPause, onOpenPlayer)
+                Spacer(Modifier.height(8.dp))
+            }
         }
-    }
 }
 
 @Composable
@@ -133,8 +156,19 @@ private fun EmptyLibrary(onScan: () -> Unit, modifier: Modifier) {
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
-private fun SongCard(song: Song, isCurrent: Boolean, onLongPress: (Song) -> Unit, onClick: () -> Unit) {
+private fun SongCard(
+    song: Song,
+    isCurrent: Boolean,
+    customCoverUri: Uri?,
+    onLongPress: (Song) -> Unit,
+    onCoverLongPress: () -> Unit,
+    onClick: () -> Unit
+) {
     val colors = LocalCybColors.current
+    val context = LocalContext.current
+    val coverUri = customCoverUri ?: song.albumArtUri
+    var albumArtFailed by remember(coverUri) { mutableStateOf(false) }
+    val fallbackCover = remember(song.id) { fallbackAlbumCovers.random() }
     Card(
         modifier = Modifier.fillMaxWidth().combinedClickable(onClick = onClick, onLongClick = { onLongPress(song) }),
         shape = RoundedCornerShape(14.dp),
@@ -143,6 +177,29 @@ private fun SongCard(song: Song, isCurrent: Boolean, onLongPress: (Song) -> Unit
         )
     ) {
         Column(Modifier.padding(14.dp)) {
+            Box(
+                modifier = Modifier.fillMaxWidth().height(150.dp).clip(RoundedCornerShape(10.dp)).background(colors.surfaceVariant)
+                    .combinedClickable(onClick = {}, onLongClick = onCoverLongPress),
+                contentAlignment = Alignment.Center
+            ) {
+                if (coverUri != null && !albumArtFailed) {
+                    AsyncImage(
+                        model = ImageRequest.Builder(context).data(coverUri).crossfade(true).build(),
+                        contentDescription = "Album cover for ${song.title}",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                        onError = { albumArtFailed = true }
+                    )
+                } else {
+                    AsyncImage(
+                        model = fallbackCover,
+                        contentDescription = "Default album cover",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+            Spacer(Modifier.height(12.dp))
             Text(
                 song.title,
                 color = if (isCurrent) colors.primary else colors.onBackground,

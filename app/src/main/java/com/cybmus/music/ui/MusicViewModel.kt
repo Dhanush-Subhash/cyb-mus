@@ -35,6 +35,8 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import androidx.palette.graphics.Palette
 import java.io.InputStream
+import java.io.File
+import java.io.FileOutputStream
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -69,6 +71,9 @@ class MusicViewModel(application: Application) : AndroidViewModel(application) {
     var editingSong by mutableStateOf<Song?>(null)
         private set
 
+    var customCoverUris by mutableStateOf<Map<Long, Uri>>(emptyMap())
+        private set
+
     var currentIndex by mutableStateOf(0)
         private set
 
@@ -91,6 +96,12 @@ class MusicViewModel(application: Application) : AndroidViewModel(application) {
         private set
 
     var wallpaperUri by mutableStateOf<Uri?>(null)
+        private set
+
+    var wallpaperBlurDp by mutableStateOf(22f)
+        private set
+
+    var wallpaperOpacity by mutableStateOf(1f)
         private set
 
     var customBandLevels by mutableStateOf(
@@ -116,6 +127,9 @@ class MusicViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         wallpaperUri = preferences.getString("wallpaper_uri", null)?.let(Uri::parse)
+        wallpaperBlurDp = preferences.getFloat("wallpaper_blur_dp", 22f)
+        wallpaperOpacity = preferences.getFloat("wallpaper_opacity", 1f)
+        customCoverUris = loadCustomCovers()
         musicFolderUris = preferences.getStringSet("music_folders", emptySet())
             .orEmpty()
             .map(Uri::parse)
@@ -520,6 +534,47 @@ class MusicViewModel(application: Application) : AndroidViewModel(application) {
                 cybColors = defaultCybColors()
             }
         }
+    }
+
+    fun saveCustomCover(songId: Long, source: Uri) {
+        val target = persistImage(source, "cover_$songId") ?: return
+        customCoverUris = customCoverUris + (songId to target)
+        preferences.edit { putString("custom_cover_$songId", target.toString()) }
+    }
+
+    fun removeCustomCover(songId: Long) {
+        customCoverUris[songId]?.path?.let { runCatching { File(it).delete() } }
+        customCoverUris = customCoverUris - songId
+        preferences.edit { remove("custom_cover_$songId") }
+    }
+
+    fun persistImage(source: Uri, name: String): Uri? {
+        return runCatching {
+            val file = File(getApplication<Application>().filesDir, "$name.jpg")
+            getApplication<Application>().contentResolver.openInputStream(source).use { input ->
+                requireNotNull(input)
+                FileOutputStream(file).use { output -> input.copyTo(output) }
+            }
+            Uri.fromFile(file)
+        }.getOrNull()
+    }
+
+    private fun loadCustomCovers(): Map<Long, Uri> {
+        return preferences.all.mapNotNull { (key, value) ->
+            if (!key.startsWith("custom_cover_")) return@mapNotNull null
+            val id = key.removePrefix("custom_cover_").toLongOrNull() ?: return@mapNotNull null
+            (value as? String)?.let { id to Uri.parse(it) }
+        }.toMap()
+    }
+
+    fun setWallpaperBlur(value: Float) {
+        wallpaperBlurDp = value.coerceIn(0f, 40f)
+        preferences.edit { putFloat("wallpaper_blur_dp", wallpaperBlurDp) }
+    }
+
+    fun updateWallpaperOpacity(value: Float) {
+        wallpaperOpacity = value.coerceIn(0.2f, 1f)
+        preferences.edit { putFloat("wallpaper_opacity", wallpaperOpacity) }
     }
 
     private fun startProgressUpdates() {

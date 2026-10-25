@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Equalizer
 import androidx.compose.material.icons.filled.LibraryMusic
@@ -23,7 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
@@ -33,6 +37,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.cybmus.music.ui.MusicViewModel
 import com.cybmus.music.ui.screens.EqualizerScreen
 import com.cybmus.music.ui.screens.LibraryScreen
@@ -146,10 +152,33 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     ) { innerPadding ->
-                        NavHost(
+                        Box(Modifier.fillMaxSize().padding(innerPadding)) {
+                            if (viewModel.wallpaperUri != null) {
+                                AsyncImage(
+                                    model = ImageRequest.Builder(this@MainActivity).data(viewModel.wallpaperUri).crossfade(true).build(),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
+                                    alpha = viewModel.wallpaperOpacity,
+                                    modifier = Modifier.fillMaxSize().blur(viewModel.wallpaperBlurDp.dp)
+                                )
+                                Box(
+                                    Modifier.fillMaxSize().background(
+                                        Brush.verticalGradient(
+                                            listOf(
+                                                cybColors.background.copy(alpha = .52f),
+                                                cybColors.background.copy(alpha = .78f),
+                                                cybColors.background.copy(alpha = .9f)
+                                            )
+                                        )
+                                    )
+                                )
+                            } else {
+                                Box(Modifier.fillMaxSize().background(cybColors.background))
+                            }
+                            NavHost(
                             navController = navController,
                             startDestination = Screen.Library.route,
-                            modifier = Modifier.padding(innerPadding)
+                            modifier = Modifier.fillMaxSize()
                         ) {
                             composable(Screen.Library.route) {
                                 if (!permissionState.status.isGranted) {
@@ -171,6 +200,8 @@ class MainActivity : ComponentActivity() {
                                             viewModel.openPlaylistEditor(song)
                                             navController.navigate(Screen.Playlists.route)
                                         },
+                                        customCoverUris = viewModel.customCoverUris,
+                                        onCustomCover = { songId, uri -> viewModel.saveCustomCover(songId, uri) },
                                         onPlayPause = { viewModel.togglePlayPause() },
                                         onOpenPlayer = { navController.navigate(Screen.Player.route) },
                                         onScan = { viewModel.loadLibrary() }
@@ -184,7 +215,7 @@ class MainActivity : ComponentActivity() {
                                     progress = viewModel.progress,
                                     positionMs = viewModel.positionMs,
                                     durationMs = viewModel.durationMs,
-                                    wallpaperUri = viewModel.wallpaperUri,
+                                    customCoverUri = viewModel.customCoverUris[viewModel.currentSong?.id],
                                     shuffleEnabled = viewModel.shuffleEnabled,
                                     repeatEnabled = viewModel.repeatEnabled,
                                     sleepTimerMinutes = viewModel.sleepTimerMinutes,
@@ -226,11 +257,18 @@ class MainActivity : ComponentActivity() {
                             composable(Screen.Settings.route) {
                                 SettingsScreen(
                                     wallpaperUri = viewModel.wallpaperUri,
-                                    onWallpaperSelected = { viewModel.setWallpaper(it) },
+                                    onWallpaperSelected = { uri ->
+                                        viewModel.setWallpaper(uri?.let { viewModel.persistImage(it, "wallpaper") })
+                                    },
                                     musicFolderUris = viewModel.musicFolderUris,
                                     onMusicFolderSelected = { viewModel.addMusicFolder(it) },
                                     onMusicFolderRemoved = { viewModel.removeMusicFolder(it) },
+                                    wallpaperBlurDp = viewModel.wallpaperBlurDp,
+                                    wallpaperOpacity = viewModel.wallpaperOpacity,
+                                    onWallpaperBlurChanged = { viewModel.setWallpaperBlur(it) },
+                                    onWallpaperOpacityChanged = { viewModel.updateWallpaperOpacity(it) }
                                 )
+                            }
                             }
                         }
                     }

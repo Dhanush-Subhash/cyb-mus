@@ -31,8 +31,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -58,7 +58,7 @@ fun PlayerScreen(
     progress: Float,
     positionMs: Long,
     durationMs: Long,
-    wallpaperUri: android.net.Uri?,
+    customCoverUri: android.net.Uri?,
     shuffleEnabled: Boolean,
     repeatEnabled: Boolean,
     sleepTimerMinutes: Int?,
@@ -72,23 +72,8 @@ fun PlayerScreen(
     modifier: Modifier = Modifier
 ) {
     val colors = LocalCybColors.current
+    val fallbackCover = remember(currentSong?.id) { fallbackAlbumCovers.random() }
     Box(modifier = modifier.fillMaxSize()) {
-        if (wallpaperUri != null) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current).data(wallpaperUri).crossfade(true).build(),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize().blur(22.dp)
-            )
-            Box(
-                Modifier.fillMaxSize().background(
-                    Brush.verticalGradient(
-                        listOf(colors.background.copy(alpha = .55f), colors.background.copy(alpha = .85f), colors.background.copy(alpha = .95f))
-                    )
-                )
-            )
-        } else Box(Modifier.fillMaxSize().background(colors.background))
-
         Column(
             modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp).padding(top = 32.dp, bottom = 44.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -98,10 +83,10 @@ fun PlayerScreen(
                 modifier = Modifier.size(290.dp).clip(RoundedCornerShape(20.dp)).background(colors.surfaceVariant),
                 contentAlignment = Alignment.Center
             ) {
-                if (currentSong?.albumArtUri != null) {
+                if (currentSong != null) {
                     AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current).data(currentSong.albumArtUri).crossfade(true).error(android.R.drawable.ic_menu_gallery).build(),
-                        contentDescription = "Cover", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize()
+                        model = ImageRequest.Builder(LocalContext.current).data(customCoverUri ?: currentSong.albumArtUri ?: fallbackCover).crossfade(true).error(fallbackCover).build(),
+                        contentDescription = "Cover", contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize().alpha(.65f)
                     )
                 } else Icon(Icons.Default.MusicNote, contentDescription = null, tint = colors.primary.copy(alpha = .5f), modifier = Modifier.size(80.dp))
             }

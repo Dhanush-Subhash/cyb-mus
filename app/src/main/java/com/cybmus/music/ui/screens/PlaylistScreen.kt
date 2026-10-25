@@ -3,10 +3,12 @@ package com.cybmus.music.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DeleteOutline
@@ -48,7 +50,7 @@ fun PlaylistScreen(
         if (selectedPlaylist !in playlists.keys) selectedPlaylist = playlists.keys.firstOrNull()
     }
 
-    Column(modifier.fillMaxSize().background(colors.background).padding(20.dp)) {
+    Column(modifier.fillMaxSize().background(colors.background.copy(alpha = .84f)).padding(20.dp)) {
         Text("PLAYLISTS", color = colors.primary, fontSize = 13.sp, fontFamily = FontFamily.Monospace, letterSpacing = 2.sp)
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             Text("Your collections", color = colors.onBackground, fontSize = 26.sp, fontWeight = FontWeight.Bold)
@@ -133,23 +135,54 @@ fun PlaylistScreen(
     }
 
     editingSong?.let { song ->
+        val targetPlaylist = selectedPlaylist ?: playlists.keys.firstOrNull()
+        var selectedSongIds by remember(editingSong?.id, targetPlaylist) {
+            mutableStateOf(targetPlaylist?.let { playlists[it] }.orEmpty().toSet())
+        }
         AlertDialog(
             onDismissRequest = onCloseEditor,
-            title = { Text("Edit playlists") },
+            title = { Text(if (targetPlaylist == null) "Edit playlists" else "Edit $targetPlaylist") },
             text = {
-                Column {
-                    Text(song.title, fontWeight = FontWeight.SemiBold)
+                Column(Modifier.heightIn(max = 420.dp).verticalScroll(rememberScrollState())) {
+                    Text("Select multiple songs to add or remove.", fontWeight = FontWeight.SemiBold)
                     Spacer(Modifier.height(10.dp))
-                    if (playlists.isEmpty()) Text("Create a playlist first from the + button.")
-                    playlists.forEach { (name, ids) ->
-                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                            Checkbox(checked = song.id in ids, onCheckedChange = { onToggleSong(name, song.id) })
-                            Text(name, modifier = Modifier.clickable { onToggleSong(name, song.id) })
+                    if (targetPlaylist == null) {
+                        Text("Create a playlist first from the + button.")
+                    } else {
+                        songs.forEach { candidate ->
+                            Row(
+                                Modifier.fillMaxWidth().clickable {
+                                    selectedSongIds = if (candidate.id in selectedSongIds) selectedSongIds - candidate.id else selectedSongIds + candidate.id
+                                },
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Checkbox(
+                                    checked = candidate.id in selectedSongIds,
+                                    onCheckedChange = { checked ->
+                                        selectedSongIds = if (checked) selectedSongIds + candidate.id else selectedSongIds - candidate.id
+                                    }
+                                )
+                                Column(Modifier.weight(1f)) {
+                                    Text(candidate.title, maxLines = 1)
+                                    Text(candidate.artist, color = colors.onSurface.copy(alpha = .6f), fontSize = 11.sp, maxLines = 1)
+                                }
+                            }
                         }
                     }
                 }
             },
-            confirmButton = { TextButton(onClick = onCloseEditor) { Text("Done") } }
+            confirmButton = {
+                TextButton(onClick = {
+                    targetPlaylist?.let { name ->
+                        val currentIds = playlists[name].orEmpty().toSet()
+                        songs.forEach { candidate ->
+                            val shouldBeIncluded = candidate.id in selectedSongIds
+                            if (shouldBeIncluded != (candidate.id in currentIds)) onToggleSong(name, candidate.id)
+                        }
+                    }
+                    onCloseEditor()
+                }) { Text("Done") }
+            }
         )
     }
 }

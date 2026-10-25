@@ -49,7 +49,7 @@ fun EqualizerScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(colors.background)
+            .background(colors.background.copy(alpha = .84f))
             .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {

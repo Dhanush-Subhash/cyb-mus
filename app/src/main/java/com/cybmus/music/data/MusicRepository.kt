@@ -80,9 +80,11 @@ class MusicRepository(private val context: Context) {
                 val uri = ContentUris.withAppendedId(
                     MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id
                 )
-                val albumArtUri = ContentUris.withAppendedId(
-                    Uri.parse("content://media/external/audio/albumart"), albumId
-                )
+                val albumArtUri = if (albumId > 0L) {
+                    ContentUris.withAppendedId(
+                        Uri.parse("content://media/external/audio/albumart"), albumId
+                    )
+                } else null
 
                 val fileType = when {
                     mime.contains("mpeg") || path.endsWith(".mp3", true) -> "mp3"

@@ -6,7 +6,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.FolderOpen
@@ -17,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -36,6 +39,10 @@ fun SettingsScreen(
     musicFolderUris: List<Uri>,
     onMusicFolderSelected: (Uri) -> Unit,
     onMusicFolderRemoved: (Uri) -> Unit,
+    wallpaperBlurDp: Float,
+    wallpaperOpacity: Float,
+    onWallpaperBlurChanged: (Float) -> Unit,
+    onWallpaperOpacityChanged: (Float) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val colors = LocalCybColors.current
@@ -53,7 +60,8 @@ fun SettingsScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(colors.background)
+            .background(colors.background.copy(alpha = .84f))
+            .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {
         Text(
@@ -105,7 +113,8 @@ fun SettingsScreen(
                                 .build(),
                             contentDescription = "Wallpaper preview",
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
+                            alpha = wallpaperOpacity,
+                            modifier = Modifier.fillMaxSize().blur(wallpaperBlurDp.dp)
                         )
                     } else {
                         Icon(
@@ -125,6 +134,22 @@ fun SettingsScreen(
                     color = colors.onSurface.copy(alpha = 0.7f),
                     fontSize = 13.sp,
                     lineHeight = 18.sp
+                )
+
+                Spacer(Modifier.height(12.dp))
+                Text("Wallpaper blur: ${wallpaperBlurDp.toInt()} dp", color = colors.onSurface.copy(alpha = .75f), fontSize = 12.sp)
+                Slider(
+                    value = wallpaperBlurDp,
+                    onValueChange = onWallpaperBlurChanged,
+                    valueRange = 0f..40f,
+                    colors = SliderDefaults.colors(thumbColor = colors.primary, activeTrackColor = colors.primary)
+                )
+                Text("Wallpaper opacity: ${(wallpaperOpacity * 100).toInt()}%", color = colors.onSurface.copy(alpha = .75f), fontSize = 12.sp)
+                Slider(
+                    value = wallpaperOpacity,
+                    onValueChange = onWallpaperOpacityChanged,
+                    valueRange = .2f..1f,
+                    colors = SliderDefaults.colors(thumbColor = colors.primary, activeTrackColor = colors.primary)
                 )
 
                 Spacer(Modifier.height(16.dp))
